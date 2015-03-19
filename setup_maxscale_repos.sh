@@ -20,6 +20,7 @@ if [[ $? == 0 ]]; then
 			sed "s|####path_to_repo####|$path_to_repo|g" $maxdir/maxscale.repo.sles11.template > /etc/zypp/repos.d/maxscale.repo
 		fi
         fi
+	rpm --import $path_to_repo/Maxscale-GPG-KEY.public
 else
 	yum --version 2> /dev/null > /dev/null
 	if [[ $? == 0 ]]; then
@@ -47,5 +48,5 @@ if [[ $? == 0 ]]; then
 	fi
 	distro_codename=$(cat /etc/*-release 2>/dev/null | grep "DISTRIB_CODENAME" | sed "s/DISTRIB_CODENAME=//")
 	sed "s|####path_to_repo####|$path_to_repo|g" $maxdir/maxscale.repo.template | sed "s|####distro_name####|$distro_name|g" |sed "s|####distro_codename####|$distro_codename|g" > /etc/apt/sources.list.d/maxscale.list
-	wget -qO - $path_to_repo Maxscale-GPG-KEY.public | apt-key add -
+	wget -qO - $path_to_repo/Maxscale-GPG-KEY.public | apt-key add -
 fi
