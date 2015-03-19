@@ -1,0 +1,6 @@
+[maxscale]
+name = maxscale
+baseurl = ####path_to_repo####/yum/sles/12/$basearch/
+gpgkey = ####path_to_repo####/Maxscale-GPG-KEY.public
+gpgcheck=1
+
