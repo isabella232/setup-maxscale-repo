@@ -47,6 +47,6 @@ if [[ $? == 0 ]]; then
         	distro_name="debian"
 	fi
 	distro_codename=$(cat /etc/*-release 2>/dev/null | grep "DISTRIB_CODENAME" | sed "s/DISTRIB_CODENAME=//")
-	sed "s|####path_to_repo####|$path_to_repo|g" $maxdir/maxscale.repo.template | sed "s|####distro_name####|$distro_name|g" |sed "s|####distro_codename####|$distro_codename|g" > /etc/apt/sources.list.d/maxscale.list
+	sed "s|####path_to_repo####|$path_to_repo|g" $maxdir/maxscale.list.template | sed "s|####distro_name####|$distro_name|g" |sed "s|####distro_codename####|$distro_codename|g" > /etc/apt/sources.list.d/maxscale.list
 	wget -qO - $path_to_repo/Maxscale-GPG-KEY.public | apt-key add -
 fi
