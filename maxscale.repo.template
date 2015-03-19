@@ -1,6 +1,6 @@
 [maxscale]
 name = maxscale
-baseurl = ####path_to_repo####/yum/###distro_name###/$releasever/$basearch/
+baseurl = ####path_to_repo####/yum/####distro_name####/$releasever/$basearch/
 gpgkey = ####path_to_repo####/Maxscale-GPG-KEY.public
 gpgcheck=1
 

@@ -11,13 +11,13 @@ if [[ $? == 0 ]]; then
 	if [[ $(echo "$release_info" | grep 'VERSION = 13') != "" ]]; then
 		# we have opensuse only for version 13 (should be fixed later)
                 distro_name="opensuse"
-		sed "s/####path_to_repo####/$path_to_repo/g" $maxdir/maxscale.repo.suse13.template > /etc/zypp/repos.d/maxscale.repo
+		sed "s|####path_to_repo####|$path_to_repo|g" $maxdir/maxscale.repo.suse13.template > /etc/zypp/repos.d/maxscale.repo
 	else
                 distro_name="sles"
 		if [[ $(echo "$release_info" | grep 'VERSION = 12') != "" ]]; then
-			sed "s/####path_to_repo####/$path_to_repo/g" $maxdir/maxscale.repo.sles12.template > /etc/zypp/repos.d/maxscale.repo
+			sed "s|####path_to_repo####|$path_to_repo|g" $maxdir/maxscale.repo.sles12.template > /etc/zypp/repos.d/maxscale.repo
 		else
-			sed "s/####path_to_repo####/$path_to_repo/g" $maxdir/maxscale.repo.sles11.template > /etc/zypp/repos.d/maxscale.repo
+			sed "s|####path_to_repo####|$path_to_repo|g" $maxdir/maxscale.repo.sles11.template > /etc/zypp/repos.d/maxscale.repo
 		fi
         fi
 else
@@ -32,7 +32,7 @@ else
         		distro_name="fedora"
 		fi
 
-		sed "s/####path_to_repo####/$path_to_repo/g" $maxdir/maxscale.repo.template | sed "s/###distro_name###/$distro_name/g"> /etc/yum.repos.d/maxscale.repo
+		sed "s|####path_to_repo####|$path_to_repo|g" $maxdir/maxscale.repo.template | sed "s|####distro_name####|$distro_name|g"> /etc/yum.repos.d/maxscale.repo
 	fi
 fi
 
@@ -46,5 +46,6 @@ if [[ $? == 0 ]]; then
         	distro_name="debian"
 	fi
 	distro_codename=$(cat /etc/*-release 2>/dev/null | grep "DISTRIB_CODENAME" | sed "s/DISTRIB_CODENAME=//")
-	sed "s/####path_to_repo####/$path_to_repo/g" $maxdir/maxscale.repo.template | sed "s/###distro_name###/$distro_name/g" |sed "s/###distro_codename###/$distro_codename/g" > /etc/apt/sources.list.d/maxscale.list
+	sed "s|####path_to_repo####|$path_to_repo|g" $maxdir/maxscale.repo.template | sed "s|####distro_name####|$distro_name|g" |sed "s|####distro_codename####|$distro_codename|g" > /etc/apt/sources.list.d/maxscale.list
+	wget -qO - $path_to_repo Maxscale-GPG-KEY.public | apt-key add -
 fi

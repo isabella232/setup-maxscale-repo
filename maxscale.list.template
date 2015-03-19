@@ -1,1 +1,1 @@
-deb ####path_to_repo####/###distro_name#### ###distro_code_name#### main
+deb ####path_to_repo####/####distro_name#### ####distro_code_name#### main
