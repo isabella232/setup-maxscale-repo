@@ -7,7 +7,7 @@ set_variables()
 set_maxscale_version()
 
 # Installation directory
-set(INSTALL_DIR "/usr/local/skysql/maxscale/" CACHE PATH "MaxScale tests installation directory.")
+#set(INSTALL_DIR "/usr/local/mariadb-maxscale/repo-setup" CACHE PATH "MaxScale tests installation directory.")
 set(CMAKE_INSTALL_PREFIX "${INSTALL_DIR}" CACHE INTERNAL "Prefix prepended to install directories." FORCE)
 
 aux_source_directory(. SRC_LIST)

@@ -7,7 +7,7 @@ if [[ -z "$path_to_repo" ]]; then
 fi 
 
 distro_name="centos"
-maxdir="/usr/local/skysql/maxscale/repo-setup"
+maxdir="/usr/local/mariadb-maxscale/repo-setup/repo-setup"
 
 zypper --version 2> /dev/null > /dev/null
 if [[ $? == 0 ]]; then
