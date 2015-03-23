@@ -1,6 +1,11 @@
 #!/bin/bash
 
-path_to_repo="http://jenkins.engskysql.com/repository/develop/mariadb-maxscale/1.0/"
+path_to_repo=$1
+
+if [[ -z "$path_to_repo" ]]; then
+	path_to_repo="http://jenkins.engskysql.com/repository/develop/mariadb-maxscale/1.0/"
+fi 
+
 distro_name="centos"
 maxdir="/usr/local/skysql/maxscale/repo-setup"
 

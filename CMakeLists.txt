@@ -12,7 +12,7 @@ set(CMAKE_INSTALL_PREFIX "${INSTALL_DIR}" CACHE INTERNAL "Prefix prepended to in
 
 aux_source_directory(. SRC_LIST)
 
-install(FILES setup_maxscale_repos.sh  DESTINATION repo-setup PERMISSIONS WORLD_READ WORLD_EXECUTE OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE)
+install(FILES setup-maxscale-repos.sh  set-maxscale-repo-password.sh DESTINATION repo-setup PERMISSIONS WORLD_READ WORLD_EXECUTE OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE)
 install(FILES maxscale.repo.template  DESTINATION repo-setup)
 install(FILES maxscale.repo.suse13.template  DESTINATION repo-setup)
 install(FILES maxscale.repo.sles11.template  DESTINATION repo-setup)
@@ -43,6 +43,7 @@ set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "setup-maxscale-repo")
 set(CPACK_PACKAGE_VERSION_MAJOR "${MAXSCALE_VERSION_MAJOR}")
 set(CPACK_PACKAGE_VERSION_MINOR "${MAXSCALE_VERSION_MINOR}")
 set(CPACK_PACKAGE_VERSION_PATCH "${MAXSCALE_VERSION_PATCH}")
+set(CPACK_RPM_POST_INSTALL_SCRIPT_FILE ${CMAKE_BINARY_DIR}/setup-maxscale-repos.sh)
 set(CPACK_PACKAGE_CONTACT "MariaDB Corporation Ab")
 set(CPACK_PACKAGE_FILE_NAME "setup-maxscale-repo-${MAXSCALE_VERSION}")
 set(CPACK_PACKAGE_NAME "setup-maxscale-repo")
