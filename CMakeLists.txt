@@ -3,14 +3,19 @@ cmake_minimum_required(VERSION 2.8)
 
 include(macros.cmake)
 
-set_variables()
 set_maxscale_version()
 
 # Installation directory
-#set(INSTALL_DIR "/usr/local/mariadb-maxscale/repo-setup" CACHE PATH "MaxScale tests installation directory.")
-set(CMAKE_INSTALL_PREFIX "${INSTALL_DIR}" CACHE INTERNAL "Prefix prepended to install directories." FORCE)
+set(CMAKE_INSTALL_PREFIX "/usr/local/mariadb-maxscale" CACHE INTERNAL "Prefix prepended to install directories." FORCE)
+set(CMAKE_BUILD_TYPE "None" CACHE STRING "Build type, possible values are:None, Debug, Optimized.")
+set(REPO_URL "http://jenkins.engskysql.com/repository/develop/mariadb-maxscale/1.0")
 
 aux_source_directory(. SRC_LIST)
+
+configure_file(${CMAKE_SOURCE_DIR}/run-setup-maxscale-repos.sh.in ${CMAKE_BINARY_DIR}/run-setup-maxscale-repos.sh @ONLY)
+configure_file(${CMAKE_SOURCE_DIR}/setup-maxscale-repos.sh.in ${CMAKE_BINARY_DIR}/setup-maxscale-repos.sh @ONLY)
+configure_file(${CMAKE_SOURCE_DIR}/set-maxscale-repo-password.sh.in ${CMAKE_BINARY_DIR}/set-maxscale-repo-password.sh @ONLY)
+
 
 install(FILES setup-maxscale-repos.sh  set-maxscale-repo-password.sh DESTINATION repo-setup PERMISSIONS WORLD_READ WORLD_EXECUTE OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE)
 install(FILES maxscale.repo.template  DESTINATION repo-setup)
@@ -18,7 +23,6 @@ install(FILES maxscale.repo.suse13.template  DESTINATION repo-setup)
 install(FILES maxscale.repo.sles11.template  DESTINATION repo-setup)
 install(FILES maxscale.repo.sles12.template  DESTINATION repo-setup)
 install(FILES maxscale.list.template  DESTINATION repo-setup)
-
 
 
 # See if we are on a RPM-capable or DEB-capable system

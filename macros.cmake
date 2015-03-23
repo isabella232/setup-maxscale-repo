@@ -8,13 +8,3 @@ macro(set_maxscale_version)
   set(MAXSCALE_VERSION "${MAXSCALE_VERSION_MAJOR}.${MAXSCALE_VERSION_MINOR}.${MAXSCALE_VERSION_PATCH}")
 
 endmacro()
-
-macro(set_variables)
-
-  # Installation directory
-  set(INSTALL_DIR "/usr/local/mariadb-maxscale/repo-setup/" CACHE PATH "MaxScale installation directory.")
-  
-  # Build type
-  set(BUILD_TYPE "None" CACHE STRING "Build type, possible values are:None, Debug, Optimized.")
-  
-endmacro()
