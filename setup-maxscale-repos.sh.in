@@ -48,10 +48,23 @@ if [[ $? == 0 ]]; then
 	release_info=$(cat /etc/*-release 2>/dev/null)
 	if [[ $(echo "$release_info" | grep 'Ubuntu') != "" ]]; then
 		distro_name="ubuntu"
+		distro_codename=$(cat /etc/*-release 2>/dev/null | grep "DISTRIB_CODENAME" | sed "s/DISTRIB_CODENAME=//")
 	else 
         	distro_name="debian"
+                distro_version=$(release_info=$(cat /etc/debian_version); \
+                        [[ "$release_info" =~ [[:space:]]*([0-9]*\.[0-9]*) ]] && echo ${BASH_REMATCH[1]})
+                case "$distro_version" in
+                        "6"*) distro_codename="squeeze"
+                                ;;
+                        "7"*) distro_codename="wheezy"
+                                ;;
+#                        "8"*) distro_codename="sid"
+#                                ;;
+                esac
+                ;;
+
 	fi
-	distro_codename=$(cat /etc/*-release 2>/dev/null | grep "DISTRIB_CODENAME" | sed "s/DISTRIB_CODENAME=//")
+	
 	sed "s|####path_to_repo####|$path_to_repo|g" $maxdir/maxscale.list.template | sed "s|####distro_name####|$distro_name|g" |sed "s|####distro_codename####|$distro_codename|g" > /etc/apt/sources.list.d/maxscale.list
 	wget -qO - $path_to_repo/Maxscale-GPG-KEY.public | apt-key add -
 fi
