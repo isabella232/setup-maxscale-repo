@@ -31,10 +31,10 @@ else
 	if [[ $? == 0 ]]; then
 		# there is YUM here
 		release_info=$(cat /etc/*-release 2>/dev/null)
-		if [[ $(echo "$release_info" | grep 'Red Hat') != "" ]]; then
+		if [[ $(echo "$release_info" | grep 'ID=' | grep 'rhel') != "" ]]; then
 			distro_name="rhel"
 		fi
-		if [[ $(echo "$release_info" | grep 'fedora') != "" ]]; then
+		if [[ $(echo "$release_info" | grep 'ID=' | grep 'fedora') != "" ]]; then
         		distro_name="fedora"
 		fi
 
