@@ -7,4 +7,4 @@ read password
 path_to_repo="http://$username:$password@@REPO_URL@"
 
 
-@CMAKE_INSTALL_PREFIX@/repo-setup/setup-maxscale-repos.sh $path_to_repo
+@CMAKE_INSTALL_PREFIX@/setup-maxscale-repos.sh $path_to_repo

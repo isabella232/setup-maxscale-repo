@@ -3,11 +3,11 @@
 path_to_repo=$1
 
 if [[ -z "$path_to_repo" ]]; then
-	path_to_repo="@REPO_URL@"
+	path_to_repo="http://@REPO_URL@"
 fi 
 
 distro_name="centos"
-maxdir="@CMAKE_INSTALL_PREFIX@/repo-setup"
+maxdir="@CMAKE_INSTALL_PREFIX@"
 
 zypper --version 2> /dev/null > /dev/null
 if [[ $? == 0 ]]; then
