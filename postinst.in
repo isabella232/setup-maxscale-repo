@@ -1,6 +1,8 @@
 #!/bin/bash
 path_to_repo="http://@REPO_URL@"
-mkdir -p /etc/pki/rpm-gpg/
-cp @CMAKE_INSTALL_PREFIX@/Maxscale-GPG-KEY.public /etc/pki/rpm-gpg/
-@CMAKE_INSTALL_PREFIX@/setup-maxscale-repos.sh $path_to_repo
+if [[ ! -e /etc/debian_version ]]; then
+	mkdir -p /etc/pki/rpm-gpg/ &&
+	  cp @CMAKE_INSTALL_PREFIX@/Maxscale-GPG-KEY.public /etc/pki/rpm-gpg/
+fi
+@CMAKE_INSTALL_PREFIX@/setup-maxscale-repos.sh "$path_to_repo"
 

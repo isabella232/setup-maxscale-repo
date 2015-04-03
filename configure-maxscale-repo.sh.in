@@ -1,10 +1,9 @@
 #!/bin/bash
-echo "Please enter username: "
-read username
-echo "Please enter password: "
-read password
+echo "Please provide login credentials for MariaDB Enterprise Portal (https://mariadb.com/my_portal/)"
+read -r -p 'Username: ' username
+read -r -s -p 'Password: ' password
+echo
 
 path_to_repo="http://$username:$password@@REPO_URL@"
 
-
-@CMAKE_INSTALL_PREFIX@/setup-maxscale-repos.sh $path_to_repo
+@CMAKE_INSTALL_PREFIX@/setup-maxscale-repos.sh "$path_to_repo"
