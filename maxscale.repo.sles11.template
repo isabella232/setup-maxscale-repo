@@ -1,6 +1,0 @@
-[maxscale]
-name = maxscale
-baseurl = ####path_to_repo####/yum/sles/11/$basearch/
-gpgkey = /etc/pki/rpm-gpg/Maxscale-GPG-KEY.public
-gpgcheck=1
-
