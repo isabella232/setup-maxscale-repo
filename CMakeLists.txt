@@ -13,16 +13,10 @@ set(REPO_URL "code.mariadb.com/mariadb-maxscale/1.1")
 aux_source_directory(. SRC_LIST)
 
 configure_file(${CMAKE_SOURCE_DIR}/postinst.in ${CMAKE_BINARY_DIR}/postinst @ONLY)
-configure_file(${CMAKE_SOURCE_DIR}/setup-maxscale-repos.sh.in ${CMAKE_BINARY_DIR}/setup-maxscale-repos.sh @ONLY)
 configure_file(${CMAKE_SOURCE_DIR}/configure-maxscale-repo.sh.in ${CMAKE_BINARY_DIR}/configure-maxscale-repo @ONLY)
 
 
-install(FILES setup-maxscale-repos.sh  configure-maxscale-repo DESTINATION . PERMISSIONS WORLD_READ WORLD_EXECUTE OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE)
-install(FILES maxscale.repo.template DESTINATION .)
-install(FILES maxscale.repo.suse13.template  DESTINATION .)
-install(FILES maxscale.repo.sles11.template  DESTINATION .)
-install(FILES maxscale.repo.sles12.template  DESTINATION .)
-install(FILES maxscale.list.template  DESTINATION .)
+install(FILES configure-maxscale-repo DESTINATION . PERMISSIONS WORLD_READ WORLD_EXECUTE OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE)
 install(FILES Maxscale-GPG-KEY.public DESTINATION .)
 
 

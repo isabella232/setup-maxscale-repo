@@ -1,9 +1,135 @@
 #!/bin/bash
-echo "Please provide login credentials for MariaDB Enterprise Portal (https://mariadb.com/my_portal/)"
-read -r -p 'Username: ' username
-read -r -s -p 'Password: ' password
-echo
 
-path_to_repo="http://$username:$password@@REPO_URL@"
+#path_to_repo="${1:-$default_path_to_repo}"
+repo_uri="@REPO_URL@"
+prompt=1
 
-@CMAKE_INSTALL_PREFIX@/setup-maxscale-repos.sh "$path_to_repo"
+while :; do
+	case $1 in
+		-n|--no-prompt)
+			prompt=0
+			;;
+		-r|--repo)
+			if [[ $2 ]]; then
+				repo_uri=$2
+				shift 2
+				continue
+			else
+				echo "[ERROR] -r|--repo requires a non-empty argument. Aborting.">&2
+				exit 1
+			fi
+			;;
+		--repo=?*)
+			repo_uri=${1#*=}
+			;;
+                --repo=)
+                        echo "[ERROR] -r|--repo requires a non-empty argument. Aborting.">&2
+                        exit 1
+                        ;;
+		-?*)
+			printf "[ERROR] unknown option '%s'. Aborting.\n" "$1">&2
+			exit 1
+			;;
+		*)
+			break
+	esac
+	shift
+done
+
+if ((prompt)); then
+	echo "Please provide login credentials for MariaDB Enterprise Portal (https://mariadb.com/my_portal/)"
+	read -r -p 'Username: ' username
+	read -r -s -p 'Password: ' password
+	echo
+
+	path_to_repo="http://$username:$password@@REPO_URL@"
+fi
+
+
+maxdir="@CMAKE_INSTALL_PREFIX@"
+
+template_rhel='[maxscale]
+name = maxscale
+baseurl = ####repo_uri####/yum/####distro_name####/$releasever/$basearch/
+gpgkey = file:///etc/pki/rpm-gpg/Maxscale-GPG-KEY.public
+gpgcheck=1';
+template_suse='[maxscale]
+name = maxscale
+baseurl = ####repo_uri####/yum/####distro_name####/####distro_version####/$basearch/
+gpgkey = http://code.mariadb.com/mariadb-maxscale/1.1/Maxscale-GPG-KEY.public
+gpgcheck=1';
+template_debian='deb ####repo_uri####/repo/####distro_name#### ####distro_codename#### main';
+
+
+if command -v zypper &>/dev/null; then
+	# it is SUSE
+	#/etc/SuSE-release is deprecated, so we prefer /etc/os-release
+	if [[ -e /etc/os-release ]] ; then
+		IFS=. read -r distro_version minor < <(
+			awk -F' *= *' '$1=="VERSION_ID"{gsub(/"/,"",$2); print $2 }' /etc/os-release
+		)
+	else
+		#SLES 11 doesn't have /etc/os-release
+		distro_version=$(awk -F' *= *' '$1=="VERSION"{print $2}' /etc/SuSE-release)
+	fi
+
+	if [[ ! $distro_version ]]; then
+		echo "[ERROR] couldn't determine OS version. Aborting." >&2
+		exit 1
+	fi
+
+	# this distro_name variable is not actually used right now?
+	if ((distro_version==13)); then
+		# we have opensuse only for version 13 (should be fixed later)
+		distro_name="opensuse"
+	else
+                distro_name="sles"
+        fi
+
+	sed -e "s|####repo_uri####|$repo_uri|g" \
+	    -e "s|####distro_name####|$distro_name|" \
+	    -e "s|####distro_version####|$distro_version|" \
+	    <<<"$template_suse" \
+	    > /etc/zypp/repos.d/maxscale.repo
+
+	#rpm --import "$epath_to_repoath_to_repo/Maxscale-GPG-KEY.public"
+
+
+elif command -v yum &>/dev/null; then
+
+	mkdir -p /etc/pki/rpm-gpg/ || exit
+
+	cp /usr/local/mariadb-maxscale-setup/Maxscale-GPG-KEY.public /etc/pki/rpm-gpg/
+
+	# there is yum here
+	distro_name="rhel" #rhel covers RHEL and CentOS
+	if [[ -e /etc/os-release ]] && grep -q '^ID=.*fedora' /etc/os-release; then
+		distro_name="fedora"
+	fi
+
+	sed -e "s|####repo_uri####|$repo_uri|g" \
+	    -e  "s|####distro_name####|$distro_name|g" \
+	    <<<"$template_rhel" \
+	    > /etc/yum.repos.d/maxscale.repo
+
+elif command -v apt-get &>/dev/null ; then
+	# there is apt-get here
+	if [[ $(lsb_release -sd) = Ubuntu* ]]; then 
+		distro_name="ubuntu"
+	else 
+        	distro_name="debian"
+	fi
+	distro_codename=$(lsb_release -sc)
+	
+	sed -e "s|####repo_uri####|$repo_uri|" \
+	    -e "s|####distro_name####|$distro_name|" \
+	    -e "s|####distro_codename####|$distro_codename|" \
+	    <<<"$template_debian" \
+	    > /etc/apt/sources.list.d/maxscale.list
+
+	apt-key add "$maxdir/Maxscale-GPG-KEY.public"
+else
+	# some unknown Linux, apparently...
+	echo "[ERROR] unable to identify operating system. Aborting. Please report this error.">&2 
+	exit 1
+fi
