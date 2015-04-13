@@ -1,6 +1,2 @@
 #!/bin/bash
-path_to_repo="http://@REPO_URL@"
-mkdir -p /etc/pki/rpm-gpg/
-cp @CMAKE_INSTALL_PREFIX@/Maxscale-GPG-KEY.public /etc/pki/rpm-gpg/
-@CMAKE_INSTALL_PREFIX@/setup-maxscale-repos.sh $path_to_repo
-
+@CMAKE_INSTALL_PREFIX@/configure-maxscale-repo --no-prompt

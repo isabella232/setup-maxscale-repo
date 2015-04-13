@@ -1,4 +1,4 @@
- project(configure-maxscale-repo)
+project(configure-maxscale-repo)
 cmake_minimum_required(VERSION 2.8)
 
 include(macros.cmake)
@@ -8,21 +8,15 @@ set_maxscale_version()
 # Installation directory
 set(CMAKE_INSTALL_PREFIX "/usr/local/mariadb-maxscale-setup" CACHE INTERNAL "Prefix prepended to install directories." FORCE)
 set(CMAKE_BUILD_TYPE "None" CACHE STRING "Build type, possible values are:None, Debug, Optimized.")
-set(REPO_URL "code.mariadb.com/mariadb-maxscale/1.1")
+set(REPO_URL "downloads.mariadb.com/software/mariadb-maxscale/1.1")
 
 aux_source_directory(. SRC_LIST)
 
 configure_file(${CMAKE_SOURCE_DIR}/postinst.in ${CMAKE_BINARY_DIR}/postinst @ONLY)
-configure_file(${CMAKE_SOURCE_DIR}/setup-maxscale-repos.sh.in ${CMAKE_BINARY_DIR}/setup-maxscale-repos.sh @ONLY)
 configure_file(${CMAKE_SOURCE_DIR}/configure-maxscale-repo.sh.in ${CMAKE_BINARY_DIR}/configure-maxscale-repo @ONLY)
 
 
-install(FILES setup-maxscale-repos.sh  configure-maxscale-repo DESTINATION . PERMISSIONS WORLD_READ WORLD_EXECUTE OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE)
-install(FILES maxscale.repo.template DESTINATION .)
-install(FILES maxscale.repo.suse13.template  DESTINATION .)
-install(FILES maxscale.repo.sles11.template  DESTINATION .)
-install(FILES maxscale.repo.sles12.template  DESTINATION .)
-install(FILES maxscale.list.template  DESTINATION .)
+install(FILES configure-maxscale-repo DESTINATION . PERMISSIONS WORLD_READ WORLD_EXECUTE OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE)
 install(FILES Maxscale-GPG-KEY.public DESTINATION .)
 
 
