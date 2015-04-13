@@ -1,7 +1,6 @@
 #!/bin/bash
 
 repo_uri="http://@REPO_URL@"
-prompt=1
 
 while :; do
 	case $1 in
@@ -34,15 +33,6 @@ while :; do
 	esac
 	shift
 done
-
-if ((prompt)); then
-	echo "Please provide login credentials for MariaDB Enterprise Portal (https://mariadb.com/my_portal/)"
-	read -r    -p 'Username: ' username
-	read -r -s -p 'Password: ' password
-	echo
-	repo_uri="https://$username:$password@@REPO_URL@"
-fi
-
 
 maxdir="@CMAKE_INSTALL_PREFIX@"
 
