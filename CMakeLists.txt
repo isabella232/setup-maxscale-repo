@@ -8,7 +8,7 @@ set_maxscale_version()
 # Installation directory
 set(CMAKE_INSTALL_PREFIX "/usr/local/mariadb-maxscale-setup" CACHE INTERNAL "Prefix prepended to install directories." FORCE)
 set(CMAKE_BUILD_TYPE "None" CACHE STRING "Build type, possible values are:None, Debug, Optimized.")
-set(REPO_URL "downloads.mariadb.com/software/mariadb-maxscale/1.1")
+set(REPO_URL "code.mariadb.com/mariadb-maxscale/1.1")
 
 aux_source_directory(. SRC_LIST)
 
