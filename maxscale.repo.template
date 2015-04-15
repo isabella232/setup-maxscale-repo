@@ -1,6 +1,0 @@
-[maxscale]
-name = maxscale
-baseurl = ####path_to_repo####/yum/####distro_name####/$releasever/$basearch/
-gpgkey = file:///etc/pki/rpm-gpg/Maxscale-GPG-KEY.public
-gpgcheck=1
-
